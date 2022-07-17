@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import entryPoinsReducer from "../features/entry-points-slice";
+import entryPoinsReducer from "../features/parking-slice";
 
 export const store = configureStore({
   reducer: {
-    entryPoints: entryPoinsReducer,
+    parking: entryPoinsReducer,
   },
 });
 

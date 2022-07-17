@@ -1,3 +1,5 @@
+import { Moment } from "moment";
+
 export enum VehicleType {
   small,
   medium,
@@ -5,9 +7,10 @@ export enum VehicleType {
 }
 
 export interface ParkingSpace {
+  id: string;
   maxVehicleTypeCapacity:
     | VehicleType.small
     | VehicleType.medium
     | VehicleType.large;
-  available: boolean;
+  dateTimeOccupied: Moment | null;
 }

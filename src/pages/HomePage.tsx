@@ -1,17 +1,16 @@
 import React, { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import PageLayout from "../components/PageLayout";
+import ParkSpaceCard from "../components/ParkSpaceCard";
 import {
   generateParkingSpaces,
   generateInitialEntryPoints,
-  getClosestParkingSpace,
 } from "../features/parking-slice";
 
 const HomePage = () => {
   const dispatch = useAppDispatch();
-  const { parkingSpaces, currentClosestParkingSpace } = useAppSelector(
-    (state) => state.parking
-  );
+  const { parkingSpaces } = useAppSelector((state) => state.parking);
 
   useEffect(() => {
     dispatch(generateParkingSpaces({ parkingSpaceQty: 20 }));
@@ -22,13 +21,20 @@ const HomePage = () => {
   }, [parkingSpaces]);
 
   return (
-    <div
-      onClick={() => {
-        dispatch(getClosestParkingSpace({ entryPoint: 1, vehicleSize: 1 }));
-      }}
-    >
-      HomePage {currentClosestParkingSpace}
-    </div>
+    <PageLayout>
+      <div className="flex flex-row flex-wrap justify-center">
+        {parkingSpaces.map(
+          ({ dateTimeOccupied, id, maxVehicleTypeCapacity }) => (
+            <ParkSpaceCard
+              key={id}
+              id={id}
+              dateTimeOccupied={dateTimeOccupied}
+              maxVehicleTypeCapacity={maxVehicleTypeCapacity}
+            />
+          )
+        )}
+      </div>
+    </PageLayout>
   );
 };
 

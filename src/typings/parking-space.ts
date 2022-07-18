@@ -6,6 +6,11 @@ export enum VehicleType {
   large,
 }
 
+export type VehicleTypes =
+  | VehicleType.small
+  | VehicleType.medium
+  | VehicleType.large;
+
 export interface ParkingSpace {
   id: string;
   maxVehicleTypeCapacity:

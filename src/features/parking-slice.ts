@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ParkingSpace, VehicleType } from "../typings/parking-space";
+import moment from "moment";
+import { ParkingSpace } from "../typings/parking-space";
 
 const initialState: {
   currentClosestParkingSpace: number | null; // parking space index
@@ -51,37 +52,13 @@ const entryPointsSlice = createSlice({
       }
     },
 
-    getClosestParkingSpace: (
+    occupyParkingSpace: (
       state,
-      action: PayloadAction<{
-        entryPoint: number;
-        vehicleSize: VehicleType.small | VehicleType.medium | VehicleType.large;
-      }>
+      action: PayloadAction<{ parkingIndex: number }>
     ) => {
-      state.currentClosestParkingSpace = null;
+      const { parkingIndex } = action.payload;
 
-      const { parkingSpaces } = state;
-      const { entryPoint, vehicleSize } = action.payload;
-      const parkingSpacesDistances = state.entryPoints[entryPoint];
-
-      const sortedParkingSpaces = parkingSpacesDistances
-        .map((distance, i) => ({
-          index: i,
-          distance,
-        }))
-        .sort((a, b) => a.distance - b.distance);
-
-      for (let i = 0; i < sortedParkingSpaces.length; i++) {
-        const currentClosest = sortedParkingSpaces[i].index;
-
-        if (
-          vehicleSize <= parkingSpaces[currentClosest].maxVehicleTypeCapacity
-        ) {
-          state.currentClosestParkingSpace = sortedParkingSpaces[i].index;
-
-          break;
-        }
-      }
+      state.parkingSpaces[parkingIndex].dateTimeOccupied = moment();
     },
   },
 });
@@ -89,7 +66,7 @@ const entryPointsSlice = createSlice({
 export const {
   generateParkingSpaces,
   generateInitialEntryPoints,
-  getClosestParkingSpace,
+  occupyParkingSpace,
 } = entryPointsSlice.actions;
 
 export default entryPointsSlice.reducer;

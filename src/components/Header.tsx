@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { occupyParkingSpace } from "../features/parking-slice";
+import { addEntryPoint, occupyParkingSpace } from "../features/parking-slice";
 import { getClosestParkingSpaceIndex } from "../helpers/get-closest-parking-space-index";
 import { VehicleTypes } from "../typings/parking-space";
+import { BsPlusLg } from "react-icons/bs";
 
 const Header = () => {
   const dispatch = useAppDispatch();
@@ -60,6 +61,15 @@ const Header = () => {
           Entry Point {i}
         </button>
       ))}
+
+      <button
+        className="text-yellow-400 hover:bg-yellow-100 transition-colors p-2 rounded-full m-2 hover:opacity-80"
+        onClick={() => {
+          dispatch(addEntryPoint());
+        }}
+      >
+        <BsPlusLg className="" />
+      </button>
     </div>
   );
 };

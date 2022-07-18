@@ -17,7 +17,9 @@ const ParkSpaceCard = ({
   return (
     <div className="flex flex-row justify-start items-center bg-white m-2 rounded-md w-[290px]">
       <div
-        className={`bg-green-400 p-4 rounded-md h-full flex items-center justify-center`}
+        className={`${
+          dateTimeOccupied === null ? "bg-green-400" : "bg-red-400"
+        } p-4 rounded-md h-full flex items-center justify-center`}
       >
         <AiFillCar className="text-white text-3xl" />
       </div>

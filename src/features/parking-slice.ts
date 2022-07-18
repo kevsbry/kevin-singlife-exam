@@ -60,6 +60,19 @@ const entryPointsSlice = createSlice({
 
       state.parkingSpaces[parkingIndex].dateTimeOccupied = moment();
     },
+
+    addEntryPoint: (state) => {
+      const { entryPoints, parkingSpaces } = state;
+      const { length } = entryPoints;
+
+      parkingSpaces.forEach(() => {
+        const randomDistance = Math.floor(Math.random() * 91) + 10;
+
+        state.entryPoints[length + 1] = state.entryPoints[length + 1]
+          ? [...state.entryPoints[length + 1], randomDistance]
+          : [randomDistance];
+      });
+    },
   },
 });
 
@@ -67,6 +80,7 @@ export const {
   generateParkingSpaces,
   generateInitialEntryPoints,
   occupyParkingSpace,
+  addEntryPoint,
 } = entryPointsSlice.actions;
 
 export default entryPointsSlice.reducer;

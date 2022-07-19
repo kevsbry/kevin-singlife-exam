@@ -8,6 +8,8 @@ import { BsPlusLg } from "react-icons/bs";
 import { BiErrorCircle } from "react-icons/bi";
 
 import Modal from "./Modal";
+import moment from "moment";
+import { saveParkingHistory } from "../features/receipt-slice";
 
 const Header = () => {
   const dispatch = useAppDispatch();
@@ -15,6 +17,7 @@ const Header = () => {
   const vehicleSizes: VehicleTypes[] = [0, 1, 2];
 
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [plateNumber, setPlateNumber] = useState("");
 
   const { parkingSpaces, entryPoints } = useAppSelector(
     (state) => state.parking
@@ -28,13 +31,22 @@ const Header = () => {
       selectedEntryPoint: entryPoint,
     });
 
-    if (closestParkingSpace === null) {
+    if (closestParkingSpace === null || plateNumber === "") {
       setShowErrorModal(true);
 
       return;
     }
 
-    dispatch(occupyParkingSpace({ parkingIndex: closestParkingSpace }));
+    const timeIn = moment();
+    dispatch(
+      occupyParkingSpace({
+        parkingIndex: closestParkingSpace,
+        timeIn,
+        vehiclePlateNumber: plateNumber,
+      })
+    );
+    setPlateNumber("");
+    dispatch(saveParkingHistory({ plateNumber, timeIn }));
   };
 
   return (
@@ -45,7 +57,9 @@ const Header = () => {
       >
         <BiErrorCircle className="text-4xl ml-auto mr-auto mb-2 text-red-400" />
         <h5 className="text-slate-400">
-          No Available parking space for you vehicle
+          {plateNumber === ""
+            ? "Please enter vehicle plate number"
+            : "No available parking space for you vehicle"}
         </h5>
       </Modal>
 
@@ -65,6 +79,16 @@ const Header = () => {
               </option>
             ))}
           </select>
+
+          <input
+            className="bg-slate-100 p-1 rounded-md"
+            value={plateNumber}
+            onChange={(e) => {
+              setPlateNumber(e.target.value);
+            }}
+            type="text"
+            placeholder="Plate Number"
+          />
         </div>
 
         {entryPoints.map((_, i) => (

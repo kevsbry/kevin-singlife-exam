@@ -17,5 +17,6 @@ export interface ParkingSpace {
     | VehicleType.small
     | VehicleType.medium
     | VehicleType.large;
+  vehiclePlateNumber: string | null;
   dateTimeOccupied: Moment | null;
 }

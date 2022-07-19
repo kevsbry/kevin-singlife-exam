@@ -13,7 +13,7 @@ const HomePage = () => {
   const { parkingSpaces } = useAppSelector((state) => state.parking);
 
   useEffect(() => {
-    dispatch(generateParkingSpaces({ parkingSpaceQty: 20 }));
+    dispatch(generateParkingSpaces({ parkingSpaceQty: 10 }));
   }, []);
 
   useEffect(() => {
@@ -24,10 +24,16 @@ const HomePage = () => {
     <PageLayout>
       <div className="flex flex-row flex-wrap justify-center">
         {parkingSpaces.map(
-          ({ dateTimeOccupied, id, maxVehicleTypeCapacity }) => (
+          ({
+            dateTimeOccupied,
+            id,
+            vehiclePlateNumber,
+            maxVehicleTypeCapacity,
+          }) => (
             <ParkSpaceCard
               key={id}
               id={id}
+              vehiclePlateNumber={vehiclePlateNumber}
               dateTimeOccupied={dateTimeOccupied}
               maxVehicleTypeCapacity={maxVehicleTypeCapacity}
             />

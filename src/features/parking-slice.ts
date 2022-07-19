@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import { ParkingSpace } from "../typings/parking-space";
 
 const initialState: {
@@ -27,6 +27,7 @@ const entryPointsSlice = createSlice({
         state.parkingSpaces.push({
           id: String(i),
           dateTimeOccupied: null,
+          vehiclePlateNumber: null,
           maxVehicleTypeCapacity: Math.floor(Math.random() * 3),
         });
       }
@@ -54,11 +55,28 @@ const entryPointsSlice = createSlice({
 
     occupyParkingSpace: (
       state,
-      action: PayloadAction<{ parkingIndex: number }>
+      action: PayloadAction<{
+        parkingIndex: number;
+        timeIn: Moment;
+        vehiclePlateNumber: string;
+      }>
+    ) => {
+      const { parkingIndex, timeIn, vehiclePlateNumber } = action.payload;
+
+      state.parkingSpaces[parkingIndex].vehiclePlateNumber = vehiclePlateNumber;
+      state.parkingSpaces[parkingIndex].dateTimeOccupied = timeIn;
+    },
+
+    freeUpParkingSpace: (
+      state,
+      action: PayloadAction<{
+        parkingIndex: number;
+      }>
     ) => {
       const { parkingIndex } = action.payload;
 
-      state.parkingSpaces[parkingIndex].dateTimeOccupied = moment();
+      state.parkingSpaces[parkingIndex].vehiclePlateNumber = null;
+      state.parkingSpaces[parkingIndex].dateTimeOccupied = null;
     },
 
     addEntryPoint: (state) => {
@@ -81,6 +99,7 @@ export const {
   generateInitialEntryPoints,
   occupyParkingSpace,
   addEntryPoint,
+  freeUpParkingSpace,
 } = entryPointsSlice.actions;
 
 export default entryPointsSlice.reducer;

@@ -14,10 +14,12 @@ const HomePage = () => {
 
   useEffect(() => {
     dispatch(generateParkingSpaces({ parkingSpaceQty: 10 }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     dispatch(generateInitialEntryPoints({ parkingSpaces, entryPointsQty: 3 }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parkingSpaces]);
 
   return (

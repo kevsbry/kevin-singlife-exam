@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import moment, { Moment } from "moment";
+import { Moment } from "moment";
 import { ParkingSpace } from "../typings/parking-space";
 
 const initialState: {
